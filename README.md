@@ -19,7 +19,7 @@ This repository contains the implementation and analysis for Formative Assessmen
 
 **Objective:** Compute probability density values for a dataset using the bivariate normal distribution formula, implemented entirely from scratch (no statistical libraries).
 
-**Dataset:** A relevant dataset sourced online (see `Global_Education.csv`).
+**Dataset:** A relevant dataset sourced online see [`Global_Education.csv`](https://www.kaggle.com/code/nelgiriyewithana/introduction-to-world-educational-data/input?select=Global_Education.csv).
 
 **What was done:**
 - Selected two continuous variables from the dataset to form a bivariate distribution.
