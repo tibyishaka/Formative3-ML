@@ -159,7 +159,11 @@ All parts of the assignment are implemented inside `Probability-Distributions.ip
 
 ```
 Formative3-ML/
-├── Global_Education.csv          # Dataset for bivariate normal distribution
-├── Probability-Distributions.ipynb  # Notebook for Probability distribution
-└── README.md                     # This file
+├── bayes_imdb_dataset.ipynb
+├── Probability-Distributions.ipynb
+├── calculations/
+│   ├── iteration-1-[colleague].pdf
+│   └── iteration-2-tonny.pdf
+├── Global_Education.csv
+└── README.md
 ```
