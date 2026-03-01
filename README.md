@@ -1,4 +1,4 @@
-# Formative 3 — Machine Learning & Probability
+﻿# Formative 3 — Machine Learning & Probability
 
 This repository contains the implementation and analysis for Formative Assessment 3, covering probability distributions, Naive Bayes sentiment analysis, and gradient descent (both manual and in code).
 
@@ -10,127 +10,142 @@ This repository contains the implementation and analysis for Formative Assessmen
 2. [Part 2: Naive Bayes — Sentiment Analysis](#part-2-naive-bayes--sentiment-analysis)
 3. [Part 3: Manual Gradient Descent](#part-3-manual-gradient-descent)
 4. [Part 4: Gradient Descent in Code](#part-4-gradient-descent-in-code)
-5. [Dataset](#dataset)
+5. [Datasets](#datasets)
 6. [Setup & Usage](#setup--usage)
+7. [Repository Structure](#repository-structure)
 
 ---
 
 ## Part 1: Bivariate Normal Distribution
 
+**Notebook:** `Probability-Distributions.ipynb`
+
 **Objective:** Compute probability density values for a dataset using the bivariate normal distribution formula, implemented entirely from scratch (no statistical libraries).
 
-**Dataset:** A relevant dataset sourced online (see `Global_Education.csv`).
+**Dataset:** [`Global_Education.csv`](https://www.kaggle.com/code/nelgiriyewithana/introduction-to-world-educational-data/input?select=Global_Education.csv) — a global education statistics dataset.
+
+**Features selected:**
+- `Gross_Tertiary_Education_Enrollment`
+- `Gross_Primary_Education_Enrollment`
 
 **What was done:**
-- Selected two continuous variables from the dataset to form a bivariate distribution.
-- Manually implemented the bivariate normal PDF formula:
-
-$$f(x, y) = \frac{1}{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}} \exp\!\left(-\frac{1}{2(1-\rho^2)}\left[\frac{(x-\mu_x)^2}{\sigma_x^2} - \frac{2\rho(x-\mu_x)(y-\mu_y)}{\sigma_x\sigma_y} + \frac{(y-\mu_y)^2}{\sigma_y^2}\right]\right)$$
-
-- Computed PDF values for each data point using only NumPy (no `scipy.stats` or similar).
-- Visualized the distribution using **Matplotlib**:
-  - A **contour plot** showing density levels across the 2D feature space.
-  - A **3D surface plot** of the PDF.
+1. Loaded and explored the dataset (`.info()`, `.isnull().sum()`, `.describe()`).
+2. Selected the two continuous features above.
+3. Computed the **mean vector** using NumPy.
+4. Computed the **covariance matrix** manually (centered data approach, no `np.cov`).
+5. Implemented the **bivariate normal PDF** from scratch using NumPy determinant and inverse.
+6. Computed PDF values for every data point (NumPy only — no `scipy.stats`).
+7. Created a visualization grid and produced two plots:
+   - A **contour plot** (density levels over the 2D feature space, with data points overlaid).
+   - A **3D surface plot** of the PDF.
 
 ---
 
 ## Part 2: Naive Bayes — Sentiment Analysis
 
+**Notebook:** `bayes_imdb_dataset.ipynb`
+
 **Objective:** Apply Bayes' Theorem to compute posterior probabilities for sentiment keywords in movie reviews.
 
-**Dataset:** [IMDb Movie Reviews Dataset](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews), loaded using `pandas`.
+**Dataset:** [IMDb Movie Reviews Dataset](https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews) (50 000 reviews, loaded with `pandas`).
+
+### Preprocessing
+
+- Converted all reviews to lowercase.
+- Removed HTML line breaks (`<br />`).
+- Stripped all punctuation.
 
 ### Keyword Selection
 
-| Sentiment  | Keywords Chosen               |
-|------------|-------------------------------|
-| Positive   | 'superb', 'wonderful', 'excellent', 'fantastic' |
-
+| Sentiment | Keywords |
+|-----------|----------|
+| Positive  | `superb`, `wonderful`, `excellent`, `fantastic` |
 
 ### Conditional Probability Direction
 
-The group computed **P(Positive | keyword)** for each selected keyword.
+Computed **P(Positive | keyword)** for each selected keyword.
 
-### Probability Table
+### Bayes' Theorem Applied
 
-For each keyword, the following probabilities were computed:
+P(Positive | keyword) = [ P(keyword | Positive) * P(Positive) ] / P(keyword)
 
-| Term        | Prior P(Pos) | Likelihood P(kw\|Pos) | Marginal P(kw) | Posterior P(Pos\|kw) |
-|-------------|-------------|----------------------|----------------|----------------------|
-| superb      | ...         | ...                  | ...            | ...                  |
-| Wonderful  | ...         | ...                  | ...            | ...                  |
-| excellent        | ...         | ...                  | ...            | ...                  |
-| Fantastic    | ...         | ...                  | ...            | ...                  |
+### What was computed per keyword
 
+| Probability | Description |
+|-------------|-------------|
+| Prior P(Pos) | Fraction of positive reviews in the full dataset |
+| Likelihood P(kw \| Pos) | Fraction of positive reviews containing the keyword |
+| Marginal P(kw) | Fraction of all reviews containing the keyword |
+| Posterior P(Pos \| kw) | Probability a review is positive given it contains the keyword |
 
 ### Implementation Notes
 
-- Bayes' Theorem applied:
-
-$$P(\text{Positive} \mid \text{keyword}) = \frac{P(\text{keyword} \mid \text{Positive}) \cdot P(\text{Positive})}{P(\text{keyword})}$$
-
-- Implemented using basic Python only — no `sklearn`, `nltk`, or ML libraries.
-- All counting and probability calculations are done manually with standard Python operations.
+- Pure Python + `pandas` only — no `sklearn`, `nltk`, or ML libraries.
+- All counting and probability steps are explicit and manual.
 
 ---
 
 ## Part 3: Manual Gradient Descent
 
-**Objective:** Manually compute three iterations of gradient descent for a simple linear regression model, showing every calculation step.
+**Files:** `gradient-descent-calculations/` (one PDF per group member)
+
+**Objective:** Manually work through four iterations of gradient descent for a simple linear regression model, showing every intermediate calculation.
 
 ### Setup
 
-Given the linear model:
+Linear model: y_hat = m*x + b
 
-$$\hat{y} = mx + b$$
+| Parameter | Value |
+|-----------|-------|
+| Initial m | -1 |
+| Initial b | 1 |
+| Learning rate (alpha) | 0.1 |
+| Data points | (1, 3) and (3, 6) |
+| Iterations | 4 (one per group member) |
 
-- Initial $m = 0$, $b = 0$
-- Learning rate $\alpha = 0.01$
-- Data points: $(1, 2)$ and $(3, 4)$
+### Update Rules
 
-### Process
+- Gradient w.r.t. m: (-2/n) * sum( x_i * (y_i - y_hat_i) )
+- Gradient w.r.t. b: (-2/n) * sum( y_i - y_hat_i )
+- m <- m - alpha * (dJ/dm)
+- b <- b - alpha * (dJ/db)
 
-For each iteration:
-1. **Compute predictions** $\hat{y}_i$ using current $m$ and $b$.
-2. **Derive the MSE cost function gradients:**
-
-$$\frac{\partial J}{\partial m} = -\frac{2}{n}\sum_{i=1}^{n} x_i(y_i - \hat{y}_i)$$
-
-$$\frac{\partial J}{\partial b} = -\frac{2}{n}\sum_{i=1}^{n}(y_i - \hat{y}_i)$$
-
-3. **Update parameters:**
-
-$$m \leftarrow m - \alpha \cdot \frac{\partial J}{\partial m}$$
-
-$$b \leftarrow b - \alpha \cdot \frac{\partial J}{\partial b}$$
-
-The number of iterations performed equals the number of group members. All intermediate results are shown in the submitted handwritten/typed document.
-
-### Trend Observation
-
-After each iteration, both $m$ and $b$ increase toward values that minimize the error — confirming that gradient descent is converging and reducing the MSE cost with each update.
+Each group member computed one iteration by hand; their working is saved as a PDF inside `gradient-descent-calculations/`.
 
 ---
 
 ## Part 4: Gradient Descent in Code
 
-**Objective:** Translate the manual gradient descent process into Python code using `SciPy` where appropriate, with each update step clearly visible.
+**Notebook:** `Gradient_Descent_Manual_Calculation.ipynb`
 
-**What was implemented:**
-- Iterative updates of $m$ and $b$ over multiple iterations (no black-box abstractions).
-- Prediction of $\hat{y}$ using the final learned $m$ and $b$.
-- Two separate **Matplotlib** plots:
-  1. **m and b vs. Iterations** — showing how the parameters evolve.
-  2. **MSE Error vs. Iterations** — showing convergence of the cost function.
+**Objective:** Translate the manual gradient descent process into Python, printing every intermediate step and plotting convergence.
+
+### Setup (matches Part 3)
+
+| Parameter | Value |
+|-----------|-------|
+| Initial m | -1 |
+| Initial b | 1 |
+| Learning rate (alpha) | 0.1 |
+| Data points | (1, 3) and (3, 6) |
+| Iterations | 4 |
+
+### What was implemented
+
+- Explicit iterative updates of m and b (no black-box optimisers).
+- A printed table at each iteration showing: m, b, MSE, dJ/dm, dJ/db.
+- Two **Matplotlib** plots:
+  1. **Parameter Updates** — m and b vs. iteration number.
+  2. **Error Reduction** — MSE vs. iteration number.
 
 ---
 
-## Dataset
+## Datasets
 
 | File | Description |
 |------|-------------|
-| `Global_Education.csv` | Used for the bivariate normal distribution (Part 1) |
-| IMDb Movie Reviews | External dataset for Naive Bayes sentiment analysis (Part 2) |
+| `Global_Education.csv` | Global education statistics — used for the bivariate normal distribution (Part 1) |
+| IMDb Movie Reviews | External Kaggle dataset — used for Naive Bayes sentiment analysis (Part 2) |
 
 ---
 
@@ -139,16 +154,18 @@ After each iteration, both $m$ and $b$ increase toward values that minimize the 
 ### Requirements
 
 ```bash
-pip install numpy pandas matplotlib scipy jupyter
+pip install numpy pandas matplotlib jupyter
 ```
 
-### Running the Notebook
+### Running the Notebooks
 
 ```bash
 jupyter notebook Probability-Distributions.ipynb
+jupyter notebook bayes_imdb_dataset.ipynb
+jupyter notebook Gradient_Descent_Manual_Calculation.ipynb
 ```
 
-All parts of the assignment are implemented inside `Probability-Distributions.ipynb`.
+> **Note:** `bayes_imdb_dataset.ipynb` expects the IMDb CSV at `/content/IMDB Dataset.csv` (Google Colab path). Update the path if running locally.
 
 ---
 
@@ -156,11 +173,14 @@ All parts of the assignment are implemented inside `Probability-Distributions.ip
 
 ```
 Formative3-ML/
-├── bayes_imdb_dataset.ipynb
-├── Probability-Distributions.ipynb
-├── calculations/
-│   ├── iteration-1-[colleague].pdf
-│   └── iteration-2-tonny.pdf
-├── Global_Education.csv
+├── Probability-Distributions.ipynb           # Part 1 — Bivariate Normal Distribution
+├── bayes_imdb_dataset.ipynb                  # Part 2 — Naive Bayes Sentiment Analysis
+├── Gradient_Descent_Manual_Calculation.ipynb # Part 4 — Gradient Descent in Code
+├── gradient-descent-calculations/            # Part 3 — Hand-written iteration PDFs
+│   ├── First iteration.pdf
+│   ├── Christian Tenny Gentel Iradukonda.pdf
+│   ├── Kabasinga Arsene.pdf
+│   └── IBYISHAKA-Last-Iteration.PDF
+├── Global_Education.csv                      # Dataset for Part 1
 └── README.md
 ```
