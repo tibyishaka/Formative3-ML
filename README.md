@@ -44,8 +44,8 @@ $$f(x, y) = \frac{1}{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}} \exp\!\left(-\frac{1}{
 
 | Sentiment  | Keywords Chosen               |
 |------------|-------------------------------|
-| Positive   | `great`, `excellent`, `love`, `amazing` |
-| Negative   | `terrible`, `boring`, `worst`, `waste`  |
+| Positive   | 'superb', 'wonderful', 'excellent', 'fantastic' |
+
 
 ### Conditional Probability Direction
 
@@ -57,14 +57,11 @@ For each keyword, the following probabilities were computed:
 
 | Term        | Prior P(Pos) | Likelihood P(kw\|Pos) | Marginal P(kw) | Posterior P(Pos\|kw) |
 |-------------|-------------|----------------------|----------------|----------------------|
-| great       | ...         | ...                  | ...            | ...                  |
-| excellent   | ...         | ...                  | ...            | ...                  |
-| love        | ...         | ...                  | ...            | ...                  |
-| amazing     | ...         | ...                  | ...            | ...                  |
-| terrible    | ...         | ...                  | ...            | ...                  |
-| boring      | ...         | ...                  | ...            | ...                  |
-| worst       | ...         | ...                  | ...            | ...                  |
-| waste       | ...         | ...                  | ...            | ...                  |
+| superb      | ...         | ...                  | ...            | ...                  |
+| Wonderful  | ...         | ...                  | ...            | ...                  |
+| excellent        | ...         | ...                  | ...            | ...                  |
+| Fantastic    | ...         | ...                  | ...            | ...                  |
+
 
 ### Implementation Notes
 
@@ -159,7 +156,11 @@ All parts of the assignment are implemented inside `Probability-Distributions.ip
 
 ```
 Formative3-ML/
-├── Global_Education.csv          # Dataset for bivariate normal distribution
-├── Probability-Distributions.ipynb  # Notebook for Probability distribution
-└── README.md                     # This file
+├── bayes_imdb_dataset.ipynb
+├── Probability-Distributions.ipynb
+├── calculations/
+│   ├── iteration-1-[colleague].pdf
+│   └── iteration-2-tonny.pdf
+├── Global_Education.csv
+└── README.md
 ```
